@@ -61,4 +61,14 @@ impl Bus {
             self.delay_timer - ticks as u8
         }
     }
+
+    pub fn draw_byte_at_coord(&mut self, x: size, y: usize, byte: u8) -> bool {
+        self.display.draw_byte_at_coord(x, y, byte)
+    }
+
+    pub fn get_display_buffer(&self) -> &[u8] {
+        self.display.get_display_buffer()
+    }
+
+    pub
 }
