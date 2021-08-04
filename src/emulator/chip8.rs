@@ -14,9 +14,9 @@ impl Chip8 {
         }
     }
 
-    pub fn load_rom(&mut self, data: Vec<u8>) {
+    pub fn load_rom(&mut self, data: &Vec<u8>) {
         for i in 0..data.len() {
-            self.bus.ram_write_byte(PROGRAM_START + i, data[i]);
+            self.bus.ram_write_byte(PROGRAM_START + i as u16, data[i]);
         }
     }
 
@@ -30,5 +30,9 @@ impl Chip8 {
 
     pub fn set_key_pressed(&mut self, key: Option<u8>) {
         self.bus.set_key_screen(key);
+    }
+
+    pub fn draw_screen(&self) {
+        self.bus.draw_screen();
     }
 }

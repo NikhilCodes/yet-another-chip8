@@ -2,6 +2,7 @@ mod cpu;
 mod bus;
 mod keyboard;
 mod ram;
-mod display;
+// mod display;
 
 pub mod chip8;
+pub mod display;

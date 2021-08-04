@@ -30,7 +30,7 @@ impl Bus {
         self.ram.write_byte(address, value)
     }
 
-    pub fn clear_screen(mut self) {
+    pub fn clear_screen(&mut self) {
         self.display.clear();
     }
 
@@ -62,13 +62,15 @@ impl Bus {
         }
     }
 
-    pub fn draw_byte_at_coord(&mut self, x: size, y: usize, byte: u8) -> bool {
-        self.display.draw_byte_at_coord(x, y, byte)
+    pub fn draw_byte_at_coord(&mut self, x: usize, y: usize, byte: u8) -> bool {
+        self.display.draw_byte_at_coord(x as u8, y as u8, byte)
     }
 
     pub fn get_display_buffer(&self) -> &[u8] {
         self.display.get_display_buffer()
     }
 
-    pub
+    pub fn draw_screen(&self) {
+        self.display.draw_screen();
+    }
 }

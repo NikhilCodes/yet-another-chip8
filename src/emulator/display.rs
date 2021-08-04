@@ -2,7 +2,7 @@ const WIDTH: usize = 64;
 const HEIGHT: usize = 32;
 
 pub struct Display {
-    screen: [u8; WIDTH * HEIGHT],
+    pub(crate) screen: [u8; WIDTH * HEIGHT],
 }
 
 impl Display {
@@ -27,24 +27,42 @@ impl Display {
     }
 
     pub fn draw_byte_at_coord(&mut self, x: u8, y: u8, byte: u8) -> bool {
-        let mut mutable_byte = byte;
-        let mut mutable_x = x;
-        let mut overwritten = false;
+        let mut erased = false;
+        let mut coord_x = x as usize;
+        let mut coord_y = y as usize;
+        let mut b = byte;
 
-        // Get 8 bits from byte and put in display
         for _ in 0..8 {
-            mutable_x %= WIDTH;
-            let bit = (mutable_byte & 0b1000_0000) >> 7;
-            let index = Display::calc_index_from_coord(x as usize, y as usize);
+            coord_x %= WIDTH;
+            coord_y %= HEIGHT;
+            let index = Display::calc_index_from_coord(coord_x, coord_y);
+            let bit = (b & 0b1000_0000) >> 7;
+            let prev_value = self.screen[index];
             self.screen[index] ^= bit;
 
-            mutable_x += 1;
-            mutable_byte <<= 1;
-            if bit != 0 && self.screen[index] == 0 {
-                overwritten = true;
+            if prev_value == 1 && self.screen[index] == 0 {
+                erased = true;
             }
+
+            coord_x += 1;
+            b <<= 1;
         }
 
-        overwritten
+        erased
+    }
+
+    pub fn draw_screen(&self) {
+        println!("{:?}", self.screen);
+        // for i in 0..self.screen.len() {
+        //     if i % 64 != 0 {
+        //         if self.screen[i] != 0 {
+        //             print!("X");
+        //         } else {
+        //             print!("-");
+        //         }
+        //     } else {
+        //         println!();
+        //     }
+        // }
     }
 }
